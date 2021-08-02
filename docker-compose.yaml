@@ -1,0 +1,15 @@
+version: "3.1"
+services: # containers. same as docker run
+api-grpc-mongodb:
+  build:
+    context: .
+    dockerfile: Dockerfile
+  container_name: api-grpc-mongodb
+  environment:
+    PORT: 50051
+    DSN: ""
+    ENVIRONMENT: PRODUCTION
+    TOKEN: eyJ0eXAiOiJKV1QiL
+  command: ./api
+  ports:
+    - "50051:50051"

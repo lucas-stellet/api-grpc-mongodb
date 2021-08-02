@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package internal.gateway;
+
+import "project_identity.proto";
+import "project_middleware.proto";
+
+option go_package = "/pb";
+
+service InternalGatewayService {
+  rpc SetGlobalSettings(SetGlobalSettingsRequest)
+      returns (SetGlobalSettingsResponse);
+
+  rpc SetProject(SetProjectRequest) returns (SetProjectResponse);
+}

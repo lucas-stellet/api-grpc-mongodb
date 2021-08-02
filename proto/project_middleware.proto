@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package internal.gateway;
+
+option go_package = "/pb";
+
+message SetGlobalSettingsRequest {
+  message PROJECT {
+    string id = 1;
+  }
+  PROJECT query = 1;
+}
+
+message SetGlobalSettingsResponse {
+  string result = 1;
+}

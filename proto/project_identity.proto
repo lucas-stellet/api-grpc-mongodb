@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package internal.gateway;
+
+option go_package = "/pb";
+
+message SetProjectRequest {
+  message GATEWAY {
+    string url = 1;
+    int32 apiVersion = 2;
+  }
+
+  GATEWAY query = 1;
+}
+
+message SetProjectResponse {
+  string result = 1;
+}

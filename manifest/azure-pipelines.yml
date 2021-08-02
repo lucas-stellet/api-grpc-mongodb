@@ -1,0 +1,33 @@
+resources:
+  - repo: self
+    fetchDepth: 1
+
+queue:
+  name: Hosted Ubuntu 1604
+trigger:
+  - main
+variables:
+  DockerHubImageName: "linkapisolutions/api-internal-gateway-v2"
+steps:
+  - task: CmdLine@1
+    displayName: "Lock image version in deployment.yml"
+    inputs:
+      filename: /bin/bash
+      arguments: '-c "awk ''{gsub(\"IMAGE_NAME\", \"$(DockerHubImageName):build-$(Build.BuildId)\", $0); gsub(\"DEPLOYMENT_NAME\", \"$(Build.SourceBranchName)\", $0); print}'' manifest/deployment.yml > $(build.artifactstagingdirectory)/deployment.yml"'
+  - task: PublishBuildArtifacts@1
+    displayName: "Publish Artifact"
+    inputs:
+      PathtoPublish: "$(build.artifactstagingdirectory)"
+  - task: Docker@0
+    displayName: "Build image DockerHub"
+    inputs:
+      containerregistrytype: "Container Registry"
+      dockerRegistryConnection: "dockerhub"
+      imageName: "$(DockerHubImageName):build-$(Build.BuildId)"
+  - task: Docker@0
+    displayName: "Publish image DockerHub"
+    inputs:
+      containerregistrytype: "Container Registry"
+      dockerRegistryConnection: "dockerhub"
+      action: "Push an image"
+      imageName: "$(DockerHubImageName):build-$(Build.BuildId)"
